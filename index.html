@@ -443,7 +443,9 @@ PHONG CÁCH GIAO TIẾP:
 
         // STATE MANAGEMENT
         let apiKey = localStorage.getItem('miu_gemini_api_key') || '';
-        let selectedModel = localStorage.getItem('miu_gemini_model') || 'gemini-3.8-flash';
+        // Luôn dùng model mới; không lấy lại tên model cũ từ LocalStorage.
+        let selectedModel = 'gemini-3.8-flash';
+        localStorage.setItem('miu_gemini_model', selectedModel);
         let chatHistory = [];
         
         // Mock Flashcards Dataset
@@ -862,6 +864,7 @@ PHONG CÁCH GIAO TIẾP:
 
         btnSettingsModal.addEventListener('click', () => {
             inputApiKey.value = apiKey;
+            selectedModel = 'gemini-3.8-flash';
             selectModel.value = selectedModel;
             modalSettings.classList.remove('hidden');
         });
@@ -869,7 +872,9 @@ PHONG CÁCH GIAO TIẾP:
 
         btnSaveSettings.addEventListener('click', () => {
             apiKey = inputApiKey.value.trim();
-            selectedModel = selectModel.value;
+            selectedModel = 'gemini-3.8-flash';
+            selectModel.value = selectedModel;
+            localStorage.setItem('miu_gemini_model', selectedModel);
             localStorage.setItem('miu_gemini_api_key', apiKey);
             localStorage.setItem('miu_gemini_model', selectedModel);
             updateApiStatusUI();
