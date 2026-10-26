@@ -646,10 +646,12 @@ PHONG CÁCH GIAO TIẾP:
 
         // GEMINI API INTEGRATION
         async function fetchGeminiResponse(userPrompt) {
-            electedModel = "gemini-3.8-flash";
+            // Dùng model mới và đồng bộ giá trị đã lưu trong trình duyệt.
+            selectedModel = "gemini-3.8-flash";
+            localStorage.setItem('miu_gemini_model', selectedModel);
 
-const endpoint =
-  `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+            const endpoint =
+                `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
 
             const contents = [
                 {
