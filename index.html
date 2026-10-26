@@ -283,8 +283,8 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Chọn Mô Hình:</label>
                     <select id="select-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (Khuyên dùng)</option>
-                        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                        <option value="gemini-pro">Gemini Pro</option>
                     </select>
                 </div>
             </div>
@@ -302,7 +302,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const SYSTEM_PROMPT = `Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam. Trả lời bằng tiếng Việt, ấm áp và thân thiện.`;
+        const SYSTEM_PROMPT = `Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam.`;
 
         let apiKey = localStorage.getItem('miu_gemini_api_key') || '';
         let selectedModel = localStorage.getItem('miu_gemini_model') || 'gemini-1.5-flash';
@@ -453,7 +453,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             showTypingIndicator();
 
             if (apiKey && apiKey.trim() !== '') {
-                await fetchGeminiV1Beta(message);
+                await fetchGeminiResponse(message);
             } else {
                 setTimeout(() => {
                     const mockReply = generateMockResponse(message);
@@ -482,15 +482,15 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             }
         });
 
-        // GỌI API THỰC TẾ SỬ DỤNG PHIÊN BẢN v1beta ĐỂ TƯƠNG THÍCH VỚI TẤT CẢ TÀI KHOẢN AI STUDIO
-        async function fetchGeminiV1Beta(userPrompt) {
-            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
-            
+        // HÀM GỌI API ĐƯỢC NÂNG CẤP ĐỂ HIỂN THỊ LỖI CHÍNH XÁC NẾU CÓ SỰ CỐ
+        async function fetchGeminiResponse(userPrompt) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1/models/${selectedModel}:generateContent?key=${apiKey}`;
             const contents = [
-                {
-                    role: "user",
-                    parts: [{ text: `${SYSTEM_PROMPT}\n\nHãy trả lời câu hỏi sau từ sinh viên: ${userPrompt}` }]
-                }
+                { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }] },
+                ...chatHistory.map(item => ({
+                    role: item.role === 'user' ? 'user' : 'model',
+                    parts: [{ text: item.content }]
+                }))
             ];
 
             try {
@@ -513,20 +513,40 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                     }
                 }
 
-                const errJson = await response.json().catch(() => ({}));
-                const errMsg = errJson.error?.message || `Mã HTTP: ${response.status}`;
-                appendMessage('bot', `⚠️ **Lỗi kết nối Gemini API v1beta (${response.status}):** ${errMsg}`);
+                // Nếu API trả về lỗi, hiển thị nguyên nhân chi tiết thay vì ẩn đi
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.error?.message || `Mã lỗi HTTP: ${response.status}`;
+                appendMessage('bot', `⚠️ **Lỗi từ Google Gemini API (${response.status}):** ${errorMessage}\n\n*(Gợi ý: Kiểm tra lại API Key xem đã chính xác chưa hoặc tạo key mới tại aistudio.google.com)*`);
 
             } catch (err) {
                 removeTypingIndicator();
-                appendMessage('bot', `⚠️ **Lỗi mạng:** Không thể gọi tới máy chủ Google. Chi tiết: ${err.message}`);
+                appendMessage('bot', `⚠️ **Lỗi kết nối mạng:** Không thể gọi API. Chi tiết: ${err.message}`);
             } finally {
                 isSending = false;
             }
         }
 
+        let quizMockIndex = 0;
+        const mockPsychologyQuestions = [
+            "🧠 **Bài tập Tâm lý học (Câu 1):** Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở vị trí đáy (cơ bản nhất)?\n👉 *Đáp án:* **Nhu cầu sinh lý** (ăn, uống, ngủ, nghỉ).",
+            "🧠 **Bài tập Tâm lý học (Câu 2):** Thuyết Điều kiện hóa cổ điển với thí nghiệm phản xạ tiết nước bọt ở chó gắn liền với tên tuổi ai?\n👉 *Đáp án:* **Ivan Pavlov**.",
+            "🧠 **Bài tập Tâm lý học (Câu 3):** Hiện tượng quên thông tin do dấu vết thần kinh phai mờ dần theo thời gian gọi là gì?\n👉 *Đáp án:* **Thuyết phai mờ vết nhớ (Decay Theory)**.",
+            "🧠 **Bài tập Tâm lý học (Câu 4):** Trí nhớ ngắn hạn của con người thường lưu trữ được khoảng bao nhiêu thông tin đơn lẻ cùng lúc?\n👉 *Đáp án:* Khoảng **7 ± 2** thông tin."
+        ];
+
         function generateMockResponse(prompt) {
-            return `🌿 Monk đang chạy ở chế độ giả lập vì chưa có API Key. Hãy bấm nút 'API Key' ở góc trên bên phải để kết nối với Google Gemini nhé!`;
+            const p = prompt.toLowerCase();
+            if (p.includes('thư giãn') || p.includes('hít thở') || p.includes('mệt') || p.includes('stress')) {
+                return `🌿 **Monk hiểu cảm giác căng thẳng của bạn!** Hãy tạm gác lại việc học và thử ngay kỹ thuật **Hít thở 4-7-8**:\n1. **Hít vào** nhẹ nhàng qua mũi trong **4 giây**.\n2. **Giữ hơi** trong phổi **7 giây**.\n3. **Thở ra** từ từ bằng miệng trong **8 giây**.\n\nLặp lại 3 lần sẽ giúp cơ thể bạn thư thái ngay lập tức đấy! ❤️`;
+            } else if (p.includes('tâm lý') || p.includes('ôn tập') || p.includes('bài tập') || p.includes('đố')) {
+                const questionText = mockPsychologyQuestions[quizMockIndex];
+                quizMockIndex = (quizMockIndex + 1) % mockPsychologyQuestions.length;
+                return `${questionText}\n\n*(Mẹo: Bạn có thể bấm nút "Tạo bài tập Tâm lý học" lần nữa để Monk ra câu hỏi tiếp theo nhé!)*`;
+            } else if (p.includes('pomodoro') || p.includes('kế hoạch') || p.includes('lịch')) {
+                return `🍅 **Lên kế hoạch Pomodoro hiệu quả cùng Monk:**\n- **Phiên học tập (25 phút):** Tập trung hoàn toàn vào một mục tiêu duy nhất.\n- **Nghỉ ngắn (5 phút):** Đứng dậy uống nước, vươn vai thư giãn.\n- **Nghỉ dài (15-20 phút):** Sau 4 chu kỳ liên tục để não bộ phục hồi.`;
+            } else {
+                return `Monk đã ghi nhận chia sẻ của bạn: *" ${prompt} "* 😊 Bạn có muốn Monk hỗ trợ thêm điều gì không?`;
+            }
         }
 
         // BREATHING WIDGET
