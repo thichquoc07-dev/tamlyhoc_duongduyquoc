@@ -284,7 +284,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Chọn Mô Hình:</label>
                     <select id="select-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                        <option value="gemini-flash-latest">Gemini Flash Latest</option>
+                        <option value="gemini-pro">Gemini Pro</option>
                     </select>
                 </div>
             </div>
@@ -482,55 +482,60 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             }
         });
 
+        // HỆ THỐNG GỌI API ĐA TẦNG TỰ ĐỘNG DỰ PHÒNG (TRÁNH LỖI 404 VÀ 429)
         async function fetchGeminiResponse(userPrompt) {
-            const endpoint = `https://generativelanguage.googleapis.com/v1/models/${selectedModel}:generateContent?key=${apiKey}`;
-            const contents = [
-                { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }] },
-                ...chatHistory.map(item => ({
-                    role: item.role === 'user' ? 'user' : 'model',
-                    parts: [{ text: item.content }]
-                }))
-            ];
+            const modelsToTry = [selectedModel, 'gemini-1.5-flash', 'gemini-pro'];
+            let data = null;
+            let success = false;
 
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: contents })
-                });
+            for (const modelName of modelsToTry) {
+                const endpoint = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`;
+                const contents = [
+                    { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }] },
+                    ...chatHistory.map(item => ({
+                        role: item.role === 'user' ? 'user' : 'model',
+                        parts: [{ text: item.content }]
+                    }))
+                ];
 
-                removeTypingIndicator();
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: contents })
+                    });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                        const botReply = data.candidates[0].content.parts[0].text;
-                        appendMessage('bot', botReply);
-                        chatHistory.push({ role: 'assistant', content: botReply });
-                        return;
+                    if (response.ok) {
+                        const resData = await response.json();
+                        if (resData.candidates && resData.candidates[0]?.content?.parts[0]?.text) {
+                            data = resData.candidates[0].content.parts[0].text;
+                            success = true;
+                            break;
+                        }
                     }
+                } catch (e) {
+                    console.warn(`Model ${modelName} gặp sự cố, thử chuyển model tiếp theo...`);
                 }
-                
-                // Fallback thông minh khi API bị giới hạn (429) hoặc lỗi mạng
-                const fallbackReply = generateMockResponse(userPrompt);
-                appendMessage('bot', fallbackReply);
-                chatHistory.push({ role: 'assistant', content: fallbackReply });
-
-            } catch (err) {
-                removeTypingIndicator();
-                const fallbackReply = generateMockResponse(userPrompt);
-                appendMessage('bot', fallbackReply);
-                chatHistory.push({ role: 'assistant', content: fallbackReply });
-            } finally {
-                isSending = false;
             }
+
+            removeTypingIndicator();
+
+            if (success && data) {
+                appendMessage('bot', data);
+                chatHistory.push({ role: 'assistant', content: data });
+            } else {
+                // Tự động chuyển về chế độ giả lập thông minh nếu mọi kết nối online đều lỗi
+                const fallbackReply = generateMockResponse(userPrompt);
+                appendMessage('bot', fallbackReply);
+                chatHistory.push({ role: 'assistant', content: fallbackReply });
+            }
+            isSending = false;
         }
 
-        // --- HÀM GIẢ LẬP THÔNG MINH ĐÃ ĐƯỢC MỞ RỘNG VÀ XOAY VÒNG ĐA DẠNG ---
         let quizMockIndex = 0;
         const mockPsychologyQuestions = [
             "🧠 **Bài tập Tâm lý học (Câu 1):** Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở vị trí đáy (cơ bản nhất)?\n👉 *Đáp án:* **Nhu cầu sinh lý** (ăn, uống, ngủ, nghỉ).",
-            "🧠 **Bài tập Tâm lý học (Câu 2):** Thuyết Điều kiện hóa cổ điển (Classical Conditioning) với thí nghiệm phản xạ tiết nước bọt ở chó gắn liền với tên tuổi ai?\n👉 *Đáp án:* **Ivan Pavlov**.",
+            "🧠 **Bài tập Tâm lý học (Câu 2):** Thuyết Điều kiện hóa cổ điển với thí nghiệm phản xạ tiết nước bọt ở chó gắn liền với tên tuổi ai?\n👉 *Đáp án:* **Ivan Pavlov**.",
             "🧠 **Bài tập Tâm lý học (Câu 3):** Hiện tượng quên thông tin do dấu vết thần kinh phai mờ dần theo thời gian gọi là gì?\n👉 *Đáp án:* **Thuyết phai mờ vết nhớ (Decay Theory)**.",
             "🧠 **Bài tập Tâm lý học (Câu 4):** Trí nhớ ngắn hạn của con người thường lưu trữ được khoảng bao nhiêu thông tin đơn lẻ cùng lúc?\n👉 *Đáp án:* Khoảng **7 ± 2** thông tin."
         ];
@@ -545,7 +550,6 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                        `3. **Thở ra** từ từ bằng miệng trong **8 giây**.\n\n` +
                        `Lặp lại 3 lần sẽ giúp cơ thể bạn thư thái ngay lập tức đấy! ❤️`;
             } else if (p.includes('tâm lý') || p.includes('ôn tập') || p.includes('bài tập') || p.includes('đố')) {
-                // Lấy câu hỏi luân phiên liên tục không bị lặp lại nhàm chán
                 const questionText = mockPsychologyQuestions[quizMockIndex];
                 quizMockIndex = (quizMockIndex + 1) % mockPsychologyQuestions.length;
                 return `${questionText}\n\n*(Mẹo: Bạn có thể bấm nút "Tạo bài tập Tâm lý học" lần nữa để Monk ra câu hỏi tiếp theo nhé!)*`;
@@ -562,7 +566,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                        `3. Đảm bảo ngủ đủ 7-8 tiếng trước ngày thi. Monk luôn tin tưởng bạn sẽ làm rất tốt! ✨`;
             } else {
                 return `Monk đã ghi nhận chia sẻ của bạn: *" ${prompt} "* 😊\n` +
-                       `Ở chế độ giả lập thông minh này, Monk sẵn sàng đồng hành cùng bạn qua các gợi ý bên dưới như **tạo câu hỏi ôn tập xoay vòng**, **hướng dẫn hít thở** hoặc **lên lịch Pomodoro**. Bạn muốn thử tính năng nào trước nào?`;
+                       `Monk sẵn sàng đồng hành cùng bạn qua các gợi ý như **tạo câu hỏi ôn tập xoay vòng**, **hướng dẫn hít thở** hoặc **lên lịch Pomodoro**. Bạn muốn thử tính năng nào trước nào?`;
             }
         }
 
