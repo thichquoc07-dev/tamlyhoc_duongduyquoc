@@ -482,54 +482,48 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             }
         });
 
-        // HỆ THỐNG GỌI API ĐA TẦNG TỰ ĐỘNG DỰ PHÒNG (TRÁNH LỖI 404 VÀ 429)
+        // HÀM GỌI API ĐƯỢC NÂNG CẤP ĐỂ HIỂN THỊ LỖI CHÍNH XÁC NẾU CÓ SỰ CỐ
         async function fetchGeminiResponse(userPrompt) {
-            const modelsToTry = [selectedModel, 'gemini-1.5-flash', 'gemini-pro'];
-            let data = null;
-            let success = false;
+            const endpoint = `https://generativelanguage.googleapis.com/v1/models/${selectedModel}:generateContent?key=${apiKey}`;
+            const contents = [
+                { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }] },
+                ...chatHistory.map(item => ({
+                    role: item.role === 'user' ? 'user' : 'model',
+                    parts: [{ text: item.content }]
+                }))
+            ];
 
-            for (const modelName of modelsToTry) {
-                const endpoint = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`;
-                const contents = [
-                    { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }] },
-                    ...chatHistory.map(item => ({
-                        role: item.role === 'user' ? 'user' : 'model',
-                        parts: [{ text: item.content }]
-                    }))
-                ];
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: contents })
+                });
 
-                try {
-                    const response = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: contents })
-                    });
+                removeTypingIndicator();
 
-                    if (response.ok) {
-                        const resData = await response.json();
-                        if (resData.candidates && resData.candidates[0]?.content?.parts[0]?.text) {
-                            data = resData.candidates[0].content.parts[0].text;
-                            success = true;
-                            break;
-                        }
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                        const botReply = data.candidates[0].content.parts[0].text;
+                        appendMessage('bot', botReply);
+                        chatHistory.push({ role: 'assistant', content: botReply });
+                        isSending = false;
+                        return;
                     }
-                } catch (e) {
-                    console.warn(`Model ${modelName} gặp sự cố, thử chuyển model tiếp theo...`);
                 }
-            }
 
-            removeTypingIndicator();
+                // Nếu API trả về lỗi, hiển thị nguyên nhân chi tiết thay vì ẩn đi
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.error?.message || `Mã lỗi HTTP: ${response.status}`;
+                appendMessage('bot', `⚠️ **Lỗi từ Google Gemini API (${response.status}):** ${errorMessage}\n\n*(Gợi ý: Kiểm tra lại API Key xem đã chính xác chưa hoặc tạo key mới tại aistudio.google.com)*`);
 
-            if (success && data) {
-                appendMessage('bot', data);
-                chatHistory.push({ role: 'assistant', content: data });
-            } else {
-                // Tự động chuyển về chế độ giả lập thông minh nếu mọi kết nối online đều lỗi
-                const fallbackReply = generateMockResponse(userPrompt);
-                appendMessage('bot', fallbackReply);
-                chatHistory.push({ role: 'assistant', content: fallbackReply });
+            } catch (err) {
+                removeTypingIndicator();
+                appendMessage('bot', `⚠️ **Lỗi kết nối mạng:** Không thể gọi API. Chi tiết: ${err.message}`);
+            } finally {
+                isSending = false;
             }
-            isSending = false;
         }
 
         let quizMockIndex = 0;
@@ -542,31 +536,16 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
 
         function generateMockResponse(prompt) {
             const p = prompt.toLowerCase();
-
             if (p.includes('thư giãn') || p.includes('hít thở') || p.includes('mệt') || p.includes('stress')) {
-                return `🌿 **Monk hiểu cảm giác căng thẳng của bạn!** Hãy tạm gác lại việc học và thử ngay kỹ thuật **Hít thở 4-7-8**:\n` +
-                       `1. **Hít vào** nhẹ nhàng qua mũi trong **4 giây**.\n` +
-                       `2. **Giữ hơi** trong phổi **7 giây**.\n` +
-                       `3. **Thở ra** từ từ bằng miệng trong **8 giây**.\n\n` +
-                       `Lặp lại 3 lần sẽ giúp cơ thể bạn thư thái ngay lập tức đấy! ❤️`;
+                return `🌿 **Monk hiểu cảm giác căng thẳng của bạn!** Hãy tạm gác lại việc học và thử ngay kỹ thuật **Hít thở 4-7-8**:\n1. **Hít vào** nhẹ nhàng qua mũi trong **4 giây**.\n2. **Giữ hơi** trong phổi **7 giây**.\n3. **Thở ra** từ từ bằng miệng trong **8 giây**.\n\nLặp lại 3 lần sẽ giúp cơ thể bạn thư thái ngay lập tức đấy! ❤️`;
             } else if (p.includes('tâm lý') || p.includes('ôn tập') || p.includes('bài tập') || p.includes('đố')) {
                 const questionText = mockPsychologyQuestions[quizMockIndex];
                 quizMockIndex = (quizMockIndex + 1) % mockPsychologyQuestions.length;
                 return `${questionText}\n\n*(Mẹo: Bạn có thể bấm nút "Tạo bài tập Tâm lý học" lần nữa để Monk ra câu hỏi tiếp theo nhé!)*`;
             } else if (p.includes('pomodoro') || p.includes('kế hoạch') || p.includes('lịch')) {
-                return `🍅 **Lên kế hoạch Pomodoro hiệu quả cùng Monk:**\n` +
-                       `- **Phiên học tập (25 phút):** Tập trung hoàn toàn vào một mục tiêu duy nhất.\n` +
-                       `- **Nghỉ ngắn (5 phút):** Đứng dậy uống nước, vươn vai thư giãn.\n` +
-                       `- **Nghỉ dài (15-20 phút):** Sau 4 chu kỳ liên tục để não bộ phục hồi.\n\n` +
-                       `Hãy thử áp dụng ngay với danh mục việc cần làm ở góc phải màn hình nhé!`;
-            } else if (p.includes('áp lực') || p.includes('thi cử')) {
-                return `💬 **Gỡ rối áp lực thi cử:**\n` +
-                       `1. Đừng cố gắng nhồi nhét toàn bộ kiến thức vào phút chót.\n` +
-                       `2. Chia nhỏ tài liệu thành từng phần ngắn và tự thưởng cho bản thân sau khi hoàn thành.\n` +
-                       `3. Đảm bảo ngủ đủ 7-8 tiếng trước ngày thi. Monk luôn tin tưởng bạn sẽ làm rất tốt! ✨`;
+                return `🍅 **Lên kế hoạch Pomodoro hiệu quả cùng Monk:**\n- **Phiên học tập (25 phút):** Tập trung hoàn toàn vào một mục tiêu duy nhất.\n- **Nghỉ ngắn (5 phút):** Đứng dậy uống nước, vươn vai thư giãn.\n- **Nghỉ dài (15-20 phút):** Sau 4 chu kỳ liên tục để não bộ phục hồi.`;
             } else {
-                return `Monk đã ghi nhận chia sẻ của bạn: *" ${prompt} "* 😊\n` +
-                       `Monk sẵn sàng đồng hành cùng bạn qua các gợi ý như **tạo câu hỏi ôn tập xoay vòng**, **hướng dẫn hít thở** hoặc **lên lịch Pomodoro**. Bạn muốn thử tính năng nào trước nào?`;
+                return `Monk đã ghi nhận chia sẻ của bạn: *" ${prompt} "* 😊 Bạn có muốn Monk hỗ trợ thêm điều gì không?`;
             }
         }
 
@@ -580,7 +559,6 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             isBreathingActive = true;
             btnStartBreath.innerHTML = `<i class="fa-solid fa-square text-[10px]"></i> Dừng lại`;
             btnStartBreath.className = "mt-3 px-4 py-1.5 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-sm transition flex items-center gap-1.5";
-            
             let phase = 0;
             function cycle() {
                 if (!isBreathingActive) return;
