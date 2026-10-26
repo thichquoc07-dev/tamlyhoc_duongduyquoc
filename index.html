@@ -21,102 +21,39 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            700: '#0f766e',
-                        },
-                        purpleBrand: {
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'breathe': 'breathe 19s infinite ease-in-out',
-                    },
-                    keyframes: {
-                        breathe: {
-                            '0%, 100%': { transform: 'scale(1)', opacity: '0.6' },
-                            '21%': { transform: 'scale(1.5)', opacity: '1' }, // 4s inhale
-                            '58%': { transform: 'scale(1.5)', opacity: '0.9' }, // 7s hold
-                            '100%': { transform: 'scale(1)', opacity: '0.6' }  // 8s exhale
-                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Custom scrollbar for better visual feel */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(241, 245, 249, 0.5);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        .chat-bubble-bot p {
-            margin-bottom: 0.5rem;
-        }
-        .chat-bubble-bot p:last-child {
-            margin-bottom: 0;
-        }
-        .chat-bubble-bot ul, .chat-bubble-bot ol {
-            margin-left: 1.25rem;
-            margin-bottom: 0.5rem;
-            list-style-type: disc;
-        }
-        .chat-bubble-bot code {
-            background-color: rgba(15, 23, 42, 0.08);
-            padding: 0.15rem 0.3rem;
-            border-radius: 0.25rem;
-            font-size: 0.85em;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(241, 245, 249, 0.5); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .chat-bubble-bot p { margin-bottom: 0.5rem; }
+        .chat-bubble-bot p:last-child { margin-bottom: 0; }
+        .chat-bubble-bot ul, .chat-bubble-bot ol { margin-left: 1.25rem; margin-bottom: 0.5rem; list-style-type: disc; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 h-full font-sans antialiased flex flex-col overflow-hidden">
 
     <!-- TOP HEADER -->
-    <header class="bg-gradient-to-r from-teal-600 via-indigo-600 to-purple-600 text-white shadow-md z-20 flex-none">
+    <header class="bg-gradient-to-r from-purple-700 via-indigo-600 to-teal-500 text-white shadow-md z-20 flex-none">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <!-- Bot Avatar & Info -->
             <div class="flex items-center space-x-3">
-                <div class="relative">
-                    <!-- Cute SVG Robot Avatar -->
-                    <div class="w-11 h-11 bg-white/20 backdrop-blur-md rounded-2xl p-1.5 flex items-center justify-center border border-white/30 shadow-inner">
-                        <svg class="w-full h-full text-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Robot Antenna -->
-                            <path d="M32 8V16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                            <circle cx="32" cy="7" r="3" fill="#FDE047"/>
-                            <!-- Robot Head -->
-                            <rect x="14" y="16" width="36" height="28" rx="8" fill="white"/>
-                            <!-- Face Display Screen -->
-                            <rect x="18" y="20" width="28" height="20" rx="5" fill="#1E293B"/>
-                            <!-- Happy Eyes -->
-                            <circle cx="25" cy="28" r="2.5" fill="#38BDF8"/>
-                            <circle cx="39" cy="28" r="2.5" fill="#38BDF8"/>
-                            <!-- Cheeks -->
-                            <circle cx="22" cy="33" r="1.5" fill="#F43F5E" opacity="0.7"/>
-                            <circle cx="42" cy="33" r="1.5" fill="#F43F5E" opacity="0.7"/>
-                            <!-- Cute Smile -->
-                            <path d="M28 33Q32 37 36 33" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/>
-                            <!-- Ears -->
-                            <rect x="10" y="24" width="4" height="12" rx="2" fill="#E2E8F0"/>
-                            <rect x="50" y="24" width="4" height="12" rx="2" fill="#E2E8F0"/>
-                        </svg>
-                    </div>
+                <div class="relative w-11 h-11 bg-white/20 backdrop-blur-md rounded-2xl p-1 flex items-center justify-center border border-white/30 shadow-inner shrink-0">
+                    <svg class="w-full h-full text-white" viewBox="0 0 64 64" fill="none">
+                        <path d="M32 8V16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="32" cy="7" r="3" fill="#FDE047"/>
+                        <rect x="14" y="16" width="36" height="28" rx="8" fill="white"/>
+                        <rect x="18" y="20" width="28" height="20" rx="5" fill="#1E293B"/>
+                        <circle cx="25" cy="28" r="2.5" fill="#38BDF8"/>
+                        <circle cx="39" cy="28" r="2.5" fill="#38BDF8"/>
+                        <path d="M28 33Q32 37 36 33" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/>
+                        <rect x="10" y="24" width="4" height="12" rx="2" fill="#E2E8F0"/>
+                        <rect x="50" y="24" width="4" height="12" rx="2" fill="#E2E8F0"/>
+                    </svg>
                     <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
                 </div>
                 <div>
@@ -124,29 +61,24 @@
                         <h1 class="font-bold text-lg tracking-wide leading-none">Bot Monk</h1>
                         <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full text-white/90 font-medium">AI Đồng Hành</span>
                     </div>
-                    <p class="text-xs text-teal-100 mt-1 flex items-center gap-1">
+                    <p class="text-xs text-purple-100 mt-1 flex items-center gap-1">
                         <i class="fa-solid fa-heart text-pink-300 text-[10px]"></i> Tư vấn tâm lý & Ôn tập sinh viên
                     </p>
                 </div>
             </div>
 
-            <!-- Top Header Controls -->
             <div class="flex items-center space-x-2">
-                <!-- System Prompt Button -->
-                <button id="btn-prompt-modal" class="px-3 py-1.5 text-xs font-medium bg-white/10 hover:bg-white/20 rounded-xl transition flex items-center gap-1.5 border border-white/10" title="Xem Prompt Hệ Thống">
+                <button id="btn-prompt-modal" class="px-3 py-1.5 text-xs font-medium bg-white/10 hover:bg-white/20 rounded-xl transition flex items-center gap-1.5 border border-white/10">
                     <i class="fa-solid fa-code"></i>
                     <span class="hidden sm:inline">System Prompt</span>
                 </button>
-                <!-- API Key Config Button -->
-                <button id="btn-settings-modal" class="px-3 py-1.5 text-xs font-medium bg-white/10 hover:bg-white/20 rounded-xl transition flex items-center gap-1.5 border border-white/10" title="Cấu hình Gemini API">
+                <button id="btn-settings-modal" class="px-3 py-1.5 text-xs font-medium bg-white/10 hover:bg-white/20 rounded-xl transition flex items-center gap-1.5 border border-white/10">
                     <i class="fa-solid fa-key"></i>
                     <span class="hidden sm:inline">API Key</span>
                 </button>
-                <!-- Clear Chat Button -->
                 <button id="btn-clear-chat" class="p-2 text-xs font-medium bg-white/10 hover:bg-rose-500/80 rounded-xl transition border border-white/10" title="Xóa hội thoại">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
-                <!-- Toggle Mobile Drawer -->
                 <button id="btn-toggle-sidebar" class="lg:hidden p-2 text-xs font-medium bg-white/10 hover:bg-white/20 rounded-xl transition border border-white/10">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -154,85 +86,65 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT APP CONTAINER -->
+    <!-- MAIN CONTENT -->
     <div class="flex-1 flex overflow-hidden max-w-7xl w-full mx-auto p-2 sm:p-4 gap-4">
 
-        <!-- CHAT AREA (LEFT / MAIN) -->
         <main class="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200/80 flex flex-col h-full overflow-hidden">
-            
-            <!-- Chat Messages Container -->
             <div id="chat-container" class="flex-1 p-4 overflow-y-auto space-y-4">
-                
-                <!-- Welcome Message Bubble -->
                 <div class="flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-500 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
                         <i class="fa-solid fa-robot text-sm"></i>
                     </div>
                     <div class="max-w-[85%] sm:max-w-[75%] bg-slate-100 border border-slate-200/70 text-slate-800 p-3.5 rounded-2xl rounded-tl-none shadow-sm text-sm leading-relaxed chat-bubble-bot">
-                        <p class="font-semibold text-teal-700 mb-1 flex items-center gap-1.5">
+                        <p class="font-semibold text-indigo-600 mb-1 flex items-center gap-1.5">
                             <span>Chào bạn! Monk ở đây với bạn nè 🌟</span>
                         </p>
                         <p>Monk là người bạn đồng hành giải tỏa căng thẳng, nhắc nhở lịch học và cùng bạn ôn thi hiệu quả. Hôm nay tâm trạng của bạn thế nào? Bạn đang cần Monk hỗ trợ gì nè?</p>
                         
                         <div class="mt-3 pt-3 border-t border-slate-200/60 text-xs text-slate-500 flex flex-wrap gap-2">
-                            <span class="inline-flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200">
-                                <i class="fa-solid fa-wind text-teal-500"></i> Giảm Stress
-                            </span>
-                            <span class="inline-flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200">
-                                <i class="fa-solid fa-book-open text-indigo-500"></i> Bài tập ôn tập
-                            </span>
-                            <span class="inline-flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200">
-                                <i class="fa-solid fa-clock text-purple-500"></i> Lịch học & Task
-                            </span>
+                            <button onclick="sendQuickMessage('Giúp mình giảm stress với!')" class="bg-white px-2 py-1 rounded-md border border-slate-200 hover:bg-indigo-50 text-indigo-600">
+                                <i class="fa-solid fa-wind"></i> Giảm Stress
+                            </button>
+                            <button onclick="sendQuickMessage('Tạo bài tập Tâm lý học cho mình!')" class="bg-white px-2 py-1 rounded-md border border-slate-200 hover:bg-teal-50 text-teal-600">
+                                <i class="fa-solid fa-book-open"></i> Bài tập ôn tập
+                            </button>
+                            <button onclick="sendQuickMessage('Nhắc nhở mình lên lịch học!')" class="bg-white px-2 py-1 rounded-md border border-slate-200 hover:bg-purple-50 text-purple-600">
+                                <i class="fa-solid fa-clock"></i> Lịch học & Task
+                            </button>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Quick Suggestions Bar -->
             <div class="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar">
                 <span class="text-xs font-semibold text-slate-400 shrink-0"><i class="fa-solid fa-bolt text-amber-400"></i> Gợi ý:</span>
-                <button class="chip-btn text-xs bg-white hover:bg-teal-50 text-teal-700 border border-teal-200/80 px-3 py-1.5 rounded-full transition shadow-xs whitespace-nowrap flex items-center gap-1">
-                    🧘 Thư giãn 5 phút
-                </button>
-                <button class="chip-btn text-xs bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200/80 px-3 py-1.5 rounded-full transition shadow-xs whitespace-nowrap flex items-center gap-1">
-                    📝 Tạo bài tập Tâm lý học
-                </button>
-                <button class="chip-btn text-xs bg-white hover:bg-purple-50 text-purple-700 border border-purple-200/80 px-3 py-1.5 rounded-full transition shadow-xs whitespace-nowrap flex items-center gap-1">
-                    ⏰ Lên kế hoạch Pomodoro
-                </button>
-                <button class="chip-btn text-xs bg-white hover:bg-rose-50 text-rose-700 border border-rose-200/80 px-3 py-1.5 rounded-full transition shadow-xs whitespace-nowrap flex items-center gap-1">
-                    💬 Mình bị áp lực thi cử
-                </button>
+                <button onclick="sendQuickMessage('Hướng dẫn mình hít thở thư giãn 5 phút')" class="chip-btn text-xs bg-white hover:bg-teal-50 text-teal-700 border border-teal-200/80 px-3 py-1.5 rounded-full transition whitespace-nowrap">🧘‍♀️ Thư giãn 5 phút</button>
+                <button onclick="sendQuickMessage('Tạo bài tập Tâm lý học')" class="chip-btn text-xs bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200/80 px-3 py-1.5 rounded-full transition whitespace-nowrap">📝 Tạo bài tập Tâm lý học</button>
+                <button onclick="sendQuickMessage('Lên kế hoạch Pomodoro')" class="chip-btn text-xs bg-white hover:bg-purple-50 text-purple-700 border border-purple-200/80 px-3 py-1.5 rounded-full transition whitespace-nowrap">⏰ Lên kế hoạch Pomodoro</button>
+                <button onclick="sendQuickMessage('Mình bị áp lực thi cử thì làm sao?')" class="chip-btn text-xs bg-white hover:bg-rose-50 text-rose-700 border border-rose-200/80 px-3 py-1.5 rounded-full transition whitespace-nowrap">💬 Áp lực thi cử</button>
             </div>
 
-            <!-- Input Box Form -->
             <div class="p-3 sm:p-4 bg-white border-t border-slate-200/80">
                 <form id="chat-form" class="flex items-end gap-2">
                     <div class="relative flex-1">
                         <textarea id="user-input" rows="1" placeholder="Trò chuyện với Monk (Ví dụ: Mình thấy mệt mỏi quá, hoặc Đố mình 3 câu Tâm lý học)..." 
-                            class="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm resize-none max-h-32 transition-all"></textarea>
+                            class="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-sm resize-none max-h-32 transition-all"></textarea>
                     </div>
                     <button type="submit" id="send-btn" 
-                        class="bg-gradient-to-r from-teal-600 to-indigo-600 hover:from-teal-700 hover:to-indigo-700 text-white w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition shadow-md hover:shadow-lg disabled:opacity-50">
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition shadow-md">
                         <i class="fa-solid fa-paper-plane text-sm"></i>
                     </button>
                 </form>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <span id="api-status-tag" class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <span class="w-2 h-2 rounded-full bg-slate-300"></span> Chế độ: Giả lập thông minh (Chưa gắn API Key)
+                        <span class="w-2 h-2 rounded-full bg-slate-300"></span> Chế độ: Giả lập thông minh
                     </span>
                     <span class="text-[11px] text-slate-400">Ấn Shift + Enter để xuống dòng</span>
                 </div>
             </div>
-
         </main>
 
-        <!-- SIDEBAR / QUICK TOOLS (RIGHT / SIDE DRAWER) -->
         <aside id="sidebar" class="fixed lg:static inset-y-0 right-0 w-80 bg-white lg:bg-transparent z-30 transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-4 overflow-y-auto shrink-0 shadow-2xl lg:shadow-none p-4 lg:p-0">
-            
-            <!-- Mobile Close Drawer Button -->
             <div class="flex lg:hidden justify-between items-center pb-2 border-b border-slate-200">
                 <h3 class="font-bold text-slate-700">Góc Hỗ Trợ Nhanh</h3>
                 <button id="btn-close-sidebar" class="text-slate-400 hover:text-slate-600 p-1">
@@ -240,7 +152,7 @@
                 </button>
             </div>
 
-            <!-- TOOL 1: 4-7-8 Breathing Relaxation Widget -->
+            <!-- TOOL 1: 4-7-8 Breathing -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80">
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2">
@@ -250,10 +162,9 @@
                 </div>
                 
                 <div class="flex flex-col items-center py-3 bg-gradient-to-b from-teal-50/50 to-indigo-50/30 rounded-xl border border-teal-100/50">
-                    <!-- Animated Breathing Circle -->
                     <div class="relative w-24 h-24 flex items-center justify-center my-2">
                         <div id="breathing-circle" class="absolute inset-0 bg-teal-400/20 rounded-full transition-all duration-1000 scale-75"></div>
-                        <div class="absolute inset-2 bg-gradient-to-tr from-teal-500 to-indigo-500 rounded-full flex items-center justify-center shadow-md">
+                        <div class="absolute inset-2 bg-indigo-600 rounded-full flex items-center justify-center shadow-md">
                             <span id="breathing-text" class="text-white text-xs font-semibold">Sẵn sàng</span>
                         </div>
                     </div>
@@ -265,7 +176,7 @@
                 </div>
             </div>
 
-            <!-- TOOL 2: Study Tasks & Reminders -->
+            <!-- TOOL 2: Tasks -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex-1 flex flex-col min-h-[220px]">
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2">
@@ -274,12 +185,8 @@
                     <span id="task-count" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">0/3</span>
                 </div>
 
-                <!-- Task List -->
-                <div id="task-list" class="space-y-2 flex-1 overflow-y-auto max-h-48 pr-1">
-                    <!-- Dynamic tasks inserted here -->
-                </div>
+                <div id="task-list" class="space-y-2 flex-1 overflow-y-auto max-h-48 pr-1"></div>
 
-                <!-- Add Task Form -->
                 <form id="task-form" class="mt-3 flex gap-2">
                     <input type="text" id="task-input" placeholder="Thêm việc cần làm..." 
                         class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -289,7 +196,7 @@
                 </form>
             </div>
 
-            <!-- TOOL 3: Quick Flashcard / Quiz Launcher -->
+            <!-- TOOL 3: Flashcard -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2">
@@ -318,18 +225,17 @@
                     </div>
                 </div>
             </div>
-
         </aside>
 
     </div>
 
-    <!-- MODAL 1: SYSTEM PROMPT DISPLAY & COPY -->
+    <!-- MODAL 1: SYSTEM PROMPT -->
     <div id="modal-prompt" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
             <div class="bg-slate-800 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <i class="fa-solid fa-robot text-teal-400"></i>
-                    <h3 class="font-bold text-base">Prompt Vai Trò (System Prompt) Của Bot Monk</h3>
+                    <h3 class="font-bold text-base">System Prompt - Bot Monk</h3>
                 </div>
                 <button id="btn-close-prompt" class="text-slate-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -337,43 +243,28 @@
             </div>
             
             <div class="p-4 overflow-y-auto space-y-3 flex-1 text-xs sm:text-sm text-slate-700 leading-relaxed bg-slate-50">
-                <p class="text-slate-500 italic">Bạn có thể sao chép đoạn Prompt này để cấu hình cho các mô hình AI khác như ChatGPT, Claude hoặc Gemini trên web:</p>
-                
-                <div class="relative">
-                    <textarea id="system-prompt-text" readonly rows="14" class="w-full bg-slate-900 text-teal-300 font-mono text-xs p-3.5 rounded-xl border border-slate-700 focus:outline-none select-all leading-relaxed">
-Bạn là "Bot Monk" - Chuyên gia tư vấn tâm lý học đường & Trợ lý đồng hành học tập dành riêng cho sinh viên Đại học/Cao đẳng.
+                <textarea id="system-prompt-text" readonly rows="12" class="w-full bg-slate-900 text-teal-300 font-mono text-xs p-3.5 rounded-xl border border-slate-700 focus:outline-none leading-relaxed">
+[VAI TRÒ & SỨ MỆNH]
+Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam.
+Sứ mệnh của bạn là lắng nghe, thấu hiểu, giúp sinh viên giải tỏa căng thẳng (stress), duy trì động lực học tập, xây dựng phương pháp học hiệu quả và ôn tập các môn học (đặc biệt là Tâm lý học đại cương, Tiếng Anh, Kỹ năng mềm).
 
-MỤC TIÊU VÀ VAI TRÒ CHÍNH:
-1. Lắng nghe & Tư vấn tâm lý:
-   - Thể hiện thái độ thấu hiểu, chân thành, ấm áp, không phán xét.
-   - Hướng dẫn sinh viên các phương pháp giảm căng thẳng, quản lý áp lực thi cử, hội chứng mệt mỏi (burnout), và cân bằng cuộc sống.
-   - Đưa ra các bài tập thư giãn nhanh (như kỹ thuật hít thở 4-7-8, chánh niệm đơn giản).
-
-2. Nhắc nhở & Quản lý học tập:
-   - Hướng dẫn lập kế hoạch học tập thông minh (Phương pháp Pomodoro, quy tắc Pareto 80/20, sơ đồ tư duy).
-   - Động viên sinh viên duy trì động lực, chiến thắng sự trì hoãn.
-
-3. Tạo bài tập Ôn tập & Kiểm tra kiến thức:
-   - Tạo bài tập trắc nghiệm, câu hỏi ôn tập, câu hỏi tình huống theo chủ đề môn học sinh viên yêu cầu (Tâm lý học đại cương, Tiếng Anh, Toán cao cấp, Lập trình, Kinh tế...).
-   - Đưa ra đáp án kèm giải thích chi tiết, ngắn gọn, dễ hiểu.
-
-PHONG CÁCH GIAO TIẾP:
-- Thân thiện, gần gũi, dùng từ ngữ ấm áp nhưng chuẩn mực (xưng "Monk" và gọi sinh viên là "bạn").
-- Sử dụng icon/emoji một cách tinh tế để tạo không khí thoải mái, không khô cứng.
-- Chia nhỏ thông tin bằng gạch đầu dòng rõ ràng, dễ đọc trên điện thoại và máy tính.
-                    </textarea>
-                </div>
+[PHONG CÁCH TƯƠNG TÁC]
+1. Ấm áp, thấu cảm, không phán xét: Xung xưng "Monk" - "bạn". Sử dụng icon thân thiện 🌸, ✨, 🧠.
+2. Lắng nghe chủ động: Khi sinh viên than mệt mỏi/stress, hãy xác nhận cảm xúc của bạn trước khi đưa ra lời khuyên.
+3. Chia nhỏ mục tiêu học tập: Khuyên sinh viên học bằng phương pháp Pomodoro (25p học - 5p nghỉ).
+4. Tạo bài tập trắc nghiệm & tự luận ôn tập: Khi sinh viên yêu cầu ôn tập Tâm lý học, hãy đưa ra 2-3 câu hỏi ngắn gọn kèm đáp án giải thích chi tiết.
+                </textarea>
             </div>
 
             <div class="p-3 bg-white border-t border-slate-200 flex justify-end gap-2">
-                <button id="btn-copy-prompt" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-xs">
+                <button id="btn-copy-prompt" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
                     <i class="fa-solid fa-copy"></i> Sao Chép Prompt
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: GEMINI API KEY SETTINGS -->
+    <!-- MODAL 2: GEMINI API KEY -->
     <div id="modal-settings" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
             <div class="bg-slate-800 text-white p-4 flex items-center justify-between">
@@ -388,21 +279,20 @@ PHONG CÁCH GIAO TIẾP:
             
             <div class="p-5 space-y-4 text-sm">
                 <p class="text-slate-600 leading-relaxed text-xs">
-                    Nhập API Key của bạn để kết nối trực tiếp Bot Monk với trí tuệ nhân tạo **Google Gemini**. Khi không nhập API Key, ứng dụng sẽ chạy ở chế độ **Giả lập phản hồi thông minh**.
+                    Nhập API Key tạo từ Google AI Studio (aistudio.google.com). Key được lưu trong trình duyệt của bạn.
                 </p>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Gemini API Key:</label>
                     <input type="password" id="input-api-key" placeholder="AIzaSy..." 
-                        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <p class="text-[11px] text-slate-400 mt-1">Lưu ý: API key được lưu trực tiếp trong trình duyệt của bạn (LocalStorage) và không bị gửi đi đâu khác.</p>
+                        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Chọn Mô Hình (Model):</label>
-                    <select id="select-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
-                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (Nhanh & Ổn định)</option>
-                        <option value="gemini-2.0-flash">Gemini 2.0 Flash (Mới nhất)</option>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Chọn Mô Hình:</label>
+                    <select id="select-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="gemini-flash-latest">Gemini Flash Latest (Tự động cập nhật)</option>
+                        <option value="gemini-pro-latest">Gemini Pro Latest (Thông minh cao cấp)</option>
                     </select>
                 </div>
             </div>
@@ -411,8 +301,8 @@ PHONG CÁCH GIAO TIẾP:
                 <button id="btn-remove-key" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-semibold transition">
                     Xóa Key
                 </button>
-                <button id="btn-save-settings" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold transition shadow-xs">
-                    Lưu & Áp Dụng
+                <button id="btn-save-settings" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold transition">
+                    Lưu Key
                 </button>
             </div>
         </div>
@@ -420,58 +310,40 @@ PHONG CÁCH GIAO TIẾP:
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // SYSTEM PROMPT TEXT
-        const SYSTEM_PROMPT = `Bạn là "Bot Monk" - Chuyên gia tư vấn tâm lý học đường & Trợ lý đồng hành học tập dành riêng cho sinh viên Đại học/Cao đẳng.
+        const SYSTEM_PROMPT = `[VAI TRÒ & SỨ MỆNH]
+Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam.
+Sứ mệnh của bạn là lắng nghe, thấu hiểu, giúp sinh viên giải tỏa căng thẳng (stress), duy trì động lực học tập, xây dựng phương pháp học hiệu quả và ôn tập các môn học (đặc biệt là Tâm lý học đại cương, Tiếng Anh, Kỹ năng mềm).
 
-MỤC TIÊU VÀ VAI TRÒ CHÍNH:
-1. Lắng nghe & Tư vấn tâm lý:
-   - Thể hiện thái độ thấu hiểu, chân thành, ấm áp, không phán xét.
-   - Hướng dẫn sinh viên các phương pháp giảm căng thẳng, quản lý áp lực thi cử, hội chứng mệt mỏi (burnout), và cân bằng cuộc sống.
-   - Đưa ra các bài tập thư giãn nhanh (như kỹ thuật hít thở 4-7-8, chánh niệm đơn giản).
+[PHONG CÁCH TƯƠNG TÁC]
+1. Ấm áp, thấu cảm, không phán xét: Xung xưng "Monk" - "bạn". Sử dụng icon thân thiện 🌸, ✨, 🧠.
+2. Lắng nghe chủ động: Khi sinh viên than mệt mỏi/stress, hãy xác nhận cảm xúc của bạn trước khi đưa ra lời khuyên.
+3. Chia nhỏ mục tiêu học tập: Khuyên sinh viên học bằng phương pháp Pomodoro (25p học - 5p nghỉ).
+4. Tạo bài tập trắc nghiệm & tự luận ôn tập: Khi sinh viên yêu cầu ôn tập Tâm lý học, hãy đưa ra 2-3 câu hỏi ngắn gọn kèm đáp án giải thích chi tiết.`;
 
-2. Nhắc nhở & Quản lý học tập:
-   - Hướng dẫn lập kế hoạch học tập thông minh (Phương pháp Pomodoro, quy tắc Pareto 80/20, sơ đồ tư duy).
-   - Động viên sinh viên duy trì động lực, chiến thắng sự trì hoãn.
-
-3. Tạo bài tập Ôn tập & Kiểm tra kiến thức:
-   - Tạo bài tập trắc nghiệm, câu hỏi ôn tập, câu hỏi tình huống theo chủ đề môn học sinh viên yêu cầu (Tâm lý học đại cương, Tiếng Anh, Toán cao cấp, Lập trình, Kinh tế...).
-   - Đưa ra đáp án kèm giải thích chi tiết, ngắn gọn, dễ hiểu.
-
-PHONG CÁCH GIAO TIẾP:
-- Thân thiện, gần gũi, dùng từ ngữ ấm áp nhưng chuẩn mực (xưng "Monk" và gọi sinh viên là "bạn").
-- Sử dụng icon/emoji một cách tinh tế để tạo không khí thoải mái, không khô cứng.
-- Chia nhỏ thông tin bằng gạch đầu dòng rõ ràng, dễ đọc trên điện thoại và máy tính.`;
-
-        // STATE MANAGEMENT
         let apiKey = localStorage.getItem('miu_gemini_api_key') || '';
-        let selectedModel = localStorage.getItem('miu_gemini_model') || 'gemini-1.5-flash';
+        let selectedModel = localStorage.getItem('miu_gemini_model') || 'gemini-flash-latest';
         let chatHistory = [];
+        let isSending = false;
         
-        // Mock Flashcards Dataset
         const flashcards = [
-            { subject: "Tâm Lý Học", q: "Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở đỉnh cao nhất?", a: "Nhu cầu thể hiện bản thân (Self-Actualization)." },
-            { subject: "Tâm Lý Học", q: "Thuyết Điều kiện hóa cổ điển (Classical Conditioning) gắn liền với nhà tâm lý học nào?", a: "Ivan Pavlov (Thí nghiệm phản xạ tiết nước bọt ở chó)." },
-            { subject: "Tiếng Anh", q: "Cụm từ 'Burn the midnight oil' có nghĩa là gì?", a: "Thức khuya để học tập hoặc làm việc mệt mỏi." },
-            { subject: "Tâm Lý Học", q: "Kỹ thuật Hít thở 4-7-8 giúp cơ thể đạt trạng thái gì?", a: "Kích hoạt hệ thần kinh phó giao cảm giúp giảm lo âu và đi vào giấc ngủ dễ dàng hơn." },
-            { subject: "Lập Trình", q: "Độ phức tạp thời gian (Time Complexity) của thuật toán Tìm kiếm Nhị phân (Binary Search) là bao nhiêu?", a: "O(log n)." }
+            { subject: "TÂM LÝ HỌC", q: "Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở đỉnh cao nhất?", a: "Nhu cầu thể hiện bản thân (Self-Actualization)." },
+            { subject: "TÂM LÝ HỌC", q: "Thuyết Điều kiện hóa cổ điển (Classical Conditioning) gắn liền với nhà tâm lý học nào?", a: "Ivan Pavlov (Thí nghiệm phản xạ tiết nước bọt ở chó)." },
+            { subject: "TÂM LÝ HỌC", q: "Hiện tượng quên do không sử dụng lại thông tin gọi là gì?", a: "Sự phai mờ vết nhớ (Decay Theory)." },
+            { subject: "TÂM LÝ HỌC", q: "Thời gian tập trung chuẩn của phương pháp Pomodoro là bao nhiêu phút?", a: "25 phút tập trung cao độ và 5 phút nghỉ ngơi." }
         ];
         let currentQuizIndex = 0;
 
-        // Sample Tasks
         let tasks = JSON.parse(localStorage.getItem('miu_tasks')) || [
             { id: 1, text: "Ôn lại 15 từ vựng Tiếng Anh", done: true },
             { id: 2, text: "Nghỉ ngơi hít thở 5 phút", done: true },
-            { id: 3, text: "Làm bài tập Tâm lý học đại cương", done: false }
+            { id: 3, text: "Làm bài tập Tâm lý học", done: false }
         ];
 
-        // DOM ELEMENTS
         const chatContainer = document.getElementById('chat-container');
         const chatForm = document.getElementById('chat-form');
         const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
         const apiStatusTag = document.getElementById('api-status-tag');
 
-        // Modals
         const modalPrompt = document.getElementById('modal-prompt');
         const modalSettings = document.getElementById('modal-settings');
         const btnPromptModal = document.getElementById('btn-prompt-modal');
@@ -485,64 +357,54 @@ PHONG CÁCH GIAO TIẾP:
         const selectModel = document.getElementById('select-model');
         const btnClearChat = document.getElementById('btn-clear-chat');
 
-        // Sidebar Elements
         const sidebar = document.getElementById('sidebar');
         const btnToggleSidebar = document.getElementById('btn-toggle-sidebar');
         const btnCloseSidebar = document.getElementById('btn-close-sidebar');
 
-        // Breathing Widget
         const btnStartBreath = document.getElementById('btn-start-breath');
         const breathingCircle = document.getElementById('breathing-circle');
         const breathingText = document.getElementById('breathing-text');
         const breathingSubtext = document.getElementById('breathing-subtext');
         let isBreathingActive = false;
 
-        // Task Widget
         const taskList = document.getElementById('task-list');
         const taskForm = document.getElementById('task-form');
         const taskInput = document.getElementById('task-input');
         const taskCount = document.getElementById('task-count');
 
-        // Quiz Widget
         const quizSubject = document.getElementById('quiz-subject');
         const quizQuestion = document.getElementById('quiz-question');
         const quizAnswer = document.getElementById('quiz-answer');
         const btnShowAnswer = document.getElementById('btn-show-answer');
         const btnNextQuiz = document.getElementById('btn-next-quiz');
 
-        // INITIALIZATION
         window.addEventListener('DOMContentLoaded', () => {
             updateApiStatusUI();
             renderTasks();
             loadQuiz(0);
 
             if (window.marked) {
-                marked.setOptions({
-                    breaks: true,
-                    gfm: true
-                });
+                marked.setOptions({ breaks: true, gfm: true });
             }
         });
 
-        // UPDATE API STATUS TEXT
         function updateApiStatusUI() {
             if (apiKey && apiKey.trim() !== '') {
                 apiStatusTag.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Chế độ: <b>Gemini Live AI (${selectedModel})</b>`;
                 apiStatusTag.className = "text-[11px] text-teal-600 font-medium flex items-center gap-1";
             } else {
-                apiStatusTag.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Chế độ: <b>Giả lập phản hồi</b> (Bấm 'API Key' để nối Gemini)`;
+                apiStatusTag.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Chế độ: <b>Giả lập phản hồi</b> (Bấm 'API Key' để nối AI)`;
                 apiStatusTag.className = "text-[11px] text-slate-500 flex items-center gap-1";
             }
         }
 
-        // CHAT RENDER LOGIC
         function appendMessage(role, text) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `flex items-start gap-3 ${role === 'user' ? 'justify-end' : ''}`;
 
             if (role === 'user') {
                 messageDiv.innerHTML = `
-                    <div class="max-w-[85%] sm:max-w-[75%] bg-gradient-to-r from-teal-600 to-indigo-600 text-white p-3.5 rounded-2xl rounded-tr-none shadow-sm text-sm leading-relaxed">
+                    <div class="max-w-[85%] sm:max-w-[75%] bg-indigo-600 text-white p-3.5 rounded-2xl rounded-tr-none shadow-sm text-sm leading-relaxed">
                         ${escapeHtml(text).replace(/\n/g, '<br>')}
                     </div>
                     <div class="w-9 h-9 rounded-xl bg-slate-700 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
@@ -552,17 +414,14 @@ PHONG CÁCH GIAO TIẾP:
             } else {
                 let parsedContent = text;
                 if (window.marked) {
-                    try {
-                        parsedContent = marked.parse(text);
-                    } catch (e) {
-                        parsedContent = escapeHtml(text).replace(/\n/g, '<br>');
-                    }
+                    try { parsedContent = marked.parse(text); } 
+                    catch (e) { parsedContent = escapeHtml(text).replace(/\n/g, '<br>'); }
                 } else {
                     parsedContent = escapeHtml(text).replace(/\n/g, '<br>');
                 }
 
                 messageDiv.innerHTML = `
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-500 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
                         <i class="fa-solid fa-robot text-sm"></i>
                     </div>
                     <div class="max-w-[85%] sm:max-w-[75%] bg-slate-100 border border-slate-200/70 text-slate-800 p-3.5 rounded-2xl rounded-tl-none shadow-sm text-sm leading-relaxed chat-bubble-bot">
@@ -580,13 +439,13 @@ PHONG CÁCH GIAO TIẾP:
             indicatorDiv.id = 'typing-indicator';
             indicatorDiv.className = 'flex items-start gap-3';
             indicatorDiv.innerHTML = `
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-500 to-indigo-500 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
                     <i class="fa-solid fa-robot text-sm"></i>
                 </div>
                 <div class="bg-slate-100 border border-slate-200/70 text-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5">
-                    <span class="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
+                    <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></span>
                     <span class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                    <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                    <span class="w-2 h-2 bg-indigo-600 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                 </div>
             `;
             chatContainer.appendChild(indicatorDiv);
@@ -602,12 +461,14 @@ PHONG CÁCH GIAO TIẾP:
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        // SEND MESSAGE HANDLER
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (isSending) return;
+
             const message = userInput.value.trim();
             if (!message) return;
 
+            isSending = true;
             userInput.value = '';
             userInput.style.height = 'auto';
 
@@ -624,9 +485,15 @@ PHONG CÁCH GIAO TIẾP:
                     removeTypingIndicator();
                     appendMessage('bot', mockReply);
                     chatHistory.push({ role: 'assistant', content: mockReply });
-                }, 800);
+                    isSending = false;
+                }, 600);
             }
         });
+
+        window.sendQuickMessage = function(text) {
+            userInput.value = text;
+            chatForm.dispatchEvent(new Event('submit'));
+        };
 
         userInput.addEventListener('input', () => {
             userInput.style.height = 'auto';
@@ -640,17 +507,13 @@ PHONG CÁCH GIAO TIẾP:
             }
         });
 
-        // GEMINI API INTEGRATION WITH FALLBACK
         async function fetchGeminiResponse(userPrompt) {
-            const endpoints = [
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=${apiKey}`
-];
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
 
             const contents = [
                 {
                     role: "user",
-                    parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Dưới đây là cuộc trò chuyện với sinh viên.` }]
+                    parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }]
                 },
                 ...chatHistory.map(item => ({
                     role: item.role === 'user' ? 'user' : 'model',
@@ -658,95 +521,70 @@ PHONG CÁCH GIAO TIẾP:
                 }))
             ];
 
-            for (const endpoint of endpoints) {
-                try {
-                    const response = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': apiKey
-                        },
-                        body: JSON.stringify({ contents: contents })
-                    });
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify({ contents: contents })
+                });
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                            removeTypingIndicator();
-                            const botReply = data.candidates[0].content.parts[0].text;
-                            appendMessage('bot', botReply);
-                            chatHistory.push({ role: 'assistant', content: botReply });
-                            return;
-                        }
+                removeTypingIndicator();
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                        const botReply = data.candidates[0].content.parts[0].text;
+                        appendMessage('bot', botReply);
+                        chatHistory.push({ role: 'assistant', content: botReply });
+                        return;
                     }
-                } catch (err) {
-                    console.warn("API Endpoint Error, attempting fallback...", err);
                 }
-            }
+                
+                // Fallback thông minh nếu gọi model chính lỗi
+                const fallbackReply = generateMockResponse(userPrompt);
+                appendMessage('bot', fallbackReply);
+                chatHistory.push({ role: 'assistant', content: fallbackReply });
 
-            // Nếu API bị quá tải hoặc lỗi mạng, tự động chuyển về Smart Mock
-            removeTypingIndicator();
-            const fallbackReply = generateMockResponse(userPrompt);
-            appendMessage('bot', fallbackReply);
-            chatHistory.push({ role: 'assistant', content: fallbackReply });
+            } catch (err) {
+                removeTypingIndicator();
+                const fallbackReply = generateMockResponse(userPrompt);
+                appendMessage('bot', fallbackReply);
+                chatHistory.push({ role: 'assistant', content: fallbackReply });
+            } finally {
+                isSending = false;
+            }
         }
 
-        // MOCK RESPONSE ENGINE
         function generateMockResponse(prompt) {
             const p = prompt.toLowerCase();
 
-            if (p.includes('thư giãn') || p.includes('hít thở') || p.includes('mệt') || p.includes('stress') || p.includes('áp lực')) {
-                return `🌿 **Monk hiểu cảm giác này lắm!** Áp lực học tập đôi khi làm chúng ta kiệt sức.\n\n` +
+            if (p.includes('thư giãn') || p.includes('hít thở') || p.includes('mệt') || p.includes('stress') || p.includes('căng thẳng') || p.includes('áp lực')) {
+                return `🌿 **Monk hiểu cảm giác này lắm!** Áp lực học tập và thi cử đôi khi làm chúng ta kiệt sức.\n\n` +
                        `Bạn hãy thử bài tập **Hít thở 4-7-8** ngay ở góc phải màn hình nhé:\n` +
                        `1. **Hít vào** nhẹ nhàng qua mũi trong **4 giây**.\n` +
                        `2. **Giữ khí** trong phổi **7 giây**.\n` +
                        `3. **Thở ra** từ từ bằng miệng trong **8 giây**.\n\n` +
-                       `Lặp lại 3-4 lần sẽ giúp hệ thần kinh dịu lại ngay lập tức đấy! Bạn có muốn tâm sự thêm về điều đang làm bạn bận tâm không? Monk luôn ở đây nghe nè ❤️`;
-            } else if (p.includes('tâm lý') || p.includes('ôn tập') || p.includes('bài tập') || p.includes('đố') || p.includes('câu hỏi')) {
-                return `📚 **Góc Ôn Tập Cùng Monk!**\n\n` +
-                       `Dưới đây là 2 câu hỏi trắc nghiệm ôn tập môn **Tâm lý học Đại cương** dành cho bạn nè:\n\n` +
+                       `Lặp lại vài lần sẽ giúp hệ thần kinh dịu lại ngay lập tức! Monk luôn ở đây đồng hành cùng bạn ❤️`;
+            } else if (p.includes('tâm lý') || p.includes('ôn tập') || p.includes('bài tập') || p.includes('đố')) {
+                return `🧠 **Bài tập ôn tập môn Tâm lý học Đại cương:**\n\n` +
                        `**Câu 1:** Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở vị trí đáy (cơ bản nhất)?\n` +
                        `- A. Nhu cầu an toàn\n` +
                        `- B. Nhu cầu sinh lý (Ăn, uống, ngủ)\n` +
                        `- C. Nhu cầu tôn trọng\n\n` +
-                       `**Câu 2:** Quá trình tâm lý nào giúp phản ánh các thuộc tính riêng lẻ của sự vật khi tác động trực tiếp vào cơ quan cảm giác?\n` +
-                       `- A. Cảm giác\n` +
-                       `- B. Tri giác\n` +
-                       `- C. Tư duy\n\n` +
-                       `👉 *Đáp án đúng:* **Câu 1 - B** và **Câu 2 - A**. Bạn có muốn thử thêm 3 câu tiếp theo không?`;
-            } else if (p.includes('lịch') || p.includes('nhắc') || p.includes('kế hoạch') || p.includes('pomodoro') || p.includes('trì hoãn')) {
-                return `⏰ **Lời khuyên quản lý thời gian từ Monk:**\n\n` +
-                       `Để vượt qua sự trì hoãn, bạn nên thử **Phương pháp Pomodoro**:\n` +
-                       `- **25 phút**: Tập trung 100% học tập (không điện thoại, không mạng xã hội).\n` +
-                       `- **5 phút**: Nghỉ ngơi ngắn (vươn vai, uống nước).\n` +
-                       `- Sau 4 chu kỳ: Nghỉ dài **15 - 30 phút**.\n\n` +
-                       `📌 Đừng quên thêm các việc cần làm vào ô **"Nhắc Nhở Học Tập"** ở danh mục bên cạnh để theo dõi nhé!`;
+                       `💡 *Đáp án:* **B. Nhu cầu sinh lý** là nền tảng cơ bản nhất duy trì sự sống con người.`;
             } else {
-                return `Monk đã nhận được chia sẻ của bạn rồi nè! 😊\n\n` +
-                       `Là trợ lý đồng hành, Monk luôn sẵn sàng hỗ trợ bạn ở 3 mảng chính:\n` +
-                       `- 🧘 **Tư vấn tâm lý & Giải tỏa stress**\n` +
-                       `- 🎯 **Lên danh sách việc cần làm & Lịch học tập**\n` +
-                       `- 📝 **Tạo bài tập trắc nghiệm ôn thi (Tâm lý học, Tiếng Anh, Lập trình...)**\n\n` +
-                       `*(Mẹo: Bạn có thể nhập Gemini API Key ở góc trên để Monk có trí tuệ nhân tạo mượt mà và thông minh hơn nhé!)*`;
+                return `Monk đã nhận được tin nhắn của bạn rồi nè! 😊\n\n` +
+                       `Monk luôn ở đây để giúp bạn **ôn tập Tâm lý học**, **giải tỏa stress** hay **lên lịch học Pomodoro**. Bạn muốn Monk hỗ trợ gì tiếp theo?`;
             }
         }
 
-        // QUICK SUGGESTION CHIPS
-        document.querySelectorAll('.chip-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const text = btn.textContent.trim().replace(/^[^\w\s\d]+/, '').trim();
-                userInput.value = text;
-                chatForm.dispatchEvent(new Event('submit'));
-            });
-        });
-
-        // BREATHING EXERCISE WIDGET LOGIC
+        // BREATHING WIDGET
         btnStartBreath.addEventListener('click', () => {
-            if (isBreathingActive) {
-                stopBreathing();
-            } else {
-                startBreathing();
-            }
+            if (isBreathingActive) stopBreathing();
+            else startBreathing();
         });
 
         function startBreathing() {
@@ -757,23 +595,19 @@ PHONG CÁCH GIAO TIẾP:
             let phase = 0;
             function cycle() {
                 if (!isBreathingActive) return;
-                
                 if (phase === 0) {
                     breathingText.textContent = "Hít vào...";
                     breathingSubtext.textContent = "Hít sâu qua mũi trong 4 giây";
                     breathingCircle.style.transform = "scale(1.5)";
-                    breathingCircle.style.backgroundColor = "rgba(20, 184, 166, 0.4)";
                     setTimeout(() => { if(isBreathingActive) { phase = 1; cycle(); } }, 4000);
                 } else if (phase === 1) {
                     breathingText.textContent = "Giữ hơi...";
-                    breathingSubtext.textContent = "Giữ khí trong lungs 7 giây";
-                    breathingCircle.style.backgroundColor = "rgba(124, 58, 237, 0.4)";
+                    breathingSubtext.textContent = "Giữ khí trong phổi 7 giây";
                     setTimeout(() => { if(isBreathingActive) { phase = 2; cycle(); } }, 7000);
-                } else if (phase === 2) {
+                } else {
                     breathingText.textContent = "Thở ra...";
                     breathingSubtext.textContent = "Thở chậm qua miệng trong 8 giây";
                     breathingCircle.style.transform = "scale(0.8)";
-                    breathingCircle.style.backgroundColor = "rgba(244, 63, 94, 0.3)";
                     setTimeout(() => { if(isBreathingActive) { phase = 0; cycle(); } }, 8000);
                 }
             }
@@ -787,20 +621,18 @@ PHONG CÁCH GIAO TIẾP:
             breathingText.textContent = "Sẵn sàng";
             breathingSubtext.textContent = "Bấm Bắt đầu để cân bằng lại nhịp thở";
             breathingCircle.style.transform = "scale(1)";
-            breathingCircle.style.backgroundColor = "rgba(20, 184, 166, 0.2)";
         }
 
-        // TASK LIST WIDGET LOGIC
+        // TASK LIST WIDGET
         function renderTasks() {
             taskList.innerHTML = '';
             let completedCount = 0;
 
             tasks.forEach((task, index) => {
                 if (task.done) completedCount++;
-
                 const item = document.createElement('div');
                 item.className = `flex items-center justify-between p-2 rounded-xl text-xs transition border ${
-                    task.done ? 'bg-slate-50 border-slate-200 text-slate-400 line-through' : 'bg-white border-slate-200 text-slate-700 shadow-2xs'
+                    task.done ? 'bg-slate-50 border-slate-200 text-slate-400 line-through' : 'bg-white border-slate-200 text-slate-700'
                 }`;
                 item.innerHTML = `
                     <div class="flex items-center gap-2 flex-1 cursor-pointer" onclick="toggleTask(${index})">
@@ -837,7 +669,7 @@ PHONG CÁCH GIAO TIẾP:
             renderTasks();
         };
 
-        // FLASHCARD / QUIZ LOGIC
+        // FLASHCARD
         function loadQuiz(index) {
             const card = flashcards[index];
             quizSubject.textContent = card.subject;
@@ -857,7 +689,7 @@ PHONG CÁCH GIAO TIẾP:
             loadQuiz(currentQuizIndex);
         });
 
-        // MODALS & DRAWER EVENT HANDLERS
+        // MODALS
         btnPromptModal.addEventListener('click', () => modalPrompt.classList.remove('hidden'));
         btnClosePrompt.addEventListener('click', () => modalPrompt.classList.add('hidden'));
 
@@ -875,7 +707,7 @@ PHONG CÁCH GIAO TIẾP:
             localStorage.setItem('miu_gemini_model', selectedModel);
             updateApiStatusUI();
             modalSettings.classList.add('hidden');
-            alert('Đã lưu cấu hình API Key thành công!');
+            alert('Đã lưu cấu hình API Key!');
         });
 
         btnRemoveKey.addEventListener('click', () => {
@@ -889,27 +721,20 @@ PHONG CÁCH GIAO TIẾP:
         btnCopyPrompt.addEventListener('click', () => {
             const text = document.getElementById('system-prompt-text').value;
             navigator.clipboard.writeText(text).then(() => {
-                btnCopyPrompt.innerHTML = `<i class="fa-solid fa-check"></i> Đã Sao Chép!`;
-                setTimeout(() => {
-                    btnCopyPrompt.innerHTML = `<i class="fa-solid fa-copy"></i> Sao Chép Prompt`;
-                }, 2000);
+                alert('Đã sao chép System Prompt!');
             });
         });
 
         btnClearChat.addEventListener('click', () => {
-            if (confirm('Bạn có chắc muốn xóa lịch sử trò chuyện hiện tại?')) {
+            if (confirm('Xóa lịch sử trò chuyện?')) {
                 chatContainer.innerHTML = '';
                 chatHistory = [];
-                appendMessage('bot', 'Chào bạn! Monk ở đây nè 🌟 Chúng ta làm lại từ đầu nhé! Bạn đang cần Monk hỗ trợ điều gì?');
+                appendMessage('bot', 'Chào bạn! Monk ở đây nè 🌟 Chúng ta làm lại từ đầu nhé!');
             }
         });
 
-        btnToggleSidebar.addEventListener('click', () => {
-            sidebar.classList.remove('translate-x-full');
-        });
-        btnCloseSidebar.addEventListener('click', () => {
-            sidebar.classList.add('translate-x-full');
-        });
+        btnToggleSidebar.addEventListener('click', () => sidebar.classList.remove('translate-x-full'));
+        btnCloseSidebar.addEventListener('click', () => sidebar.classList.add('translate-x-full'));
     </script>
 </body>
 </html>
