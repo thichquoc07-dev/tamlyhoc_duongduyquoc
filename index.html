@@ -19,7 +19,9 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
                 }
             }
         }
@@ -114,7 +116,6 @@
                 </div>
             </div>
 
-            <!-- Quick Suggestions Bar -->
             <div class="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar">
                 <span class="text-xs font-semibold text-slate-400 shrink-0"><i class="fa-solid fa-bolt text-amber-400"></i> Gợi ý:</span>
                 <button onclick="sendQuickMessage('Hướng dẫn mình hít thở thư giãn 5 phút')" class="chip-btn text-xs bg-white hover:bg-teal-50 text-teal-700 border border-teal-200/80 px-3 py-1.5 rounded-full transition whitespace-nowrap">🧘‍♀️ Thư giãn 5 phút</button>
@@ -245,6 +246,13 @@
                 <textarea id="system-prompt-text" readonly rows="12" class="w-full bg-slate-900 text-teal-300 font-mono text-xs p-3.5 rounded-xl border border-slate-700 focus:outline-none leading-relaxed">
 [VAI TRÒ & SỨ MỆNH]
 Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam.
+Sứ mệnh của bạn là lắng nghe, thấu hiểu, giúp sinh viên giải tỏa căng thẳng (stress), duy trì động lực học tập, xây dựng phương pháp học hiệu quả và ôn tập các môn học (đặc biệt là Tâm lý học đại cương, Tiếng Anh, Kỹ năng mềm).
+
+[PHONG CÁCH TƯƠNG TÁC]
+1. Ấm áp, thấu cảm, không phán xét: Xung xưng "Monk" - "bạn". Sử dụng icon thân thiện 🌸, ✨, 🧠.
+2. Lắng nghe chủ động: Khi sinh viên than mệt mỏi/stress, hãy xác nhận cảm xúc của bạn trước khi đưa ra lời khuyên.
+3. Chia nhỏ mục tiêu học tập: Khuyên sinh viên học bằng phương pháp Pomodoro (25p học - 5p nghỉ).
+4. Tạo bài tập trắc nghiệm & tự luận ôn tập: Khi sinh viên yêu cầu ôn tập Tâm lý học, hãy đưa ra 2-3 câu hỏi ngắn gọn kèm đáp án giải thích chi tiết.
                 </textarea>
             </div>
 
@@ -283,8 +291,8 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Chọn Mô Hình:</label>
                     <select id="select-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                        <option value="gemini-flash-latest">Gemini Flash Latest</option>
+                        <option value="gemini-flash-latest">Gemini Flash Latest (Tự động cập nhật)</option>
+                        <option value="gemini-pro-latest">Gemini Pro Latest (Thông minh cao cấp)</option>
                     </select>
                 </div>
             </div>
@@ -302,16 +310,26 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const SYSTEM_PROMPT = `Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam.`;
+        const SYSTEM_PROMPT = `[VAI TRÒ & SỨ MỆNH]
+Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường và Đồng hành Học tập dành riêng cho sinh viên Việt Nam.
+Sứ mệnh của bạn là lắng nghe, thấu hiểu, giúp sinh viên giải tỏa căng thẳng (stress), duy trì động lực học tập, xây dựng phương pháp học hiệu quả và ôn tập các môn học (đặc biệt là Tâm lý học đại cương, Tiếng Anh, Kỹ năng mềm).
+
+[PHONG CÁCH TƯƠNG TÁC]
+1. Ấm áp, thấu cảm, không phán xét: Xung xưng "Monk" - "bạn". Sử dụng icon thân thiện 🌸, ✨, 🧠.
+2. Lắng nghe chủ động: Khi sinh viên than mệt mỏi/stress, hãy xác nhận cảm xúc của bạn trước khi đưa ra lời khuyên.
+3. Chia nhỏ mục tiêu học tập: Khuyên sinh viên học bằng phương pháp Pomodoro (25p học - 5p nghỉ).
+4. Tạo bài tập trắc nghiệm & tự luận ôn tập: Khi sinh viên yêu cầu ôn tập Tâm lý học, hãy đưa ra 2-3 câu hỏi ngắn gọn kèm đáp án giải thích chi tiết.`;
 
         let apiKey = localStorage.getItem('miu_gemini_api_key') || '';
-        let selectedModel = localStorage.getItem('miu_gemini_model') || 'gemini-1.5-flash';
+        let selectedModel = localStorage.getItem('miu_gemini_model') || 'gemini-flash-latest';
         let chatHistory = [];
         let isSending = false;
         
         const flashcards = [
             { subject: "TÂM LÝ HỌC", q: "Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở đỉnh cao nhất?", a: "Nhu cầu thể hiện bản thân (Self-Actualization)." },
-            { subject: "TÂM LÝ HỌC", q: "Thuyết Điều kiện hóa cổ điển gắn liền với nhà tâm lý học nào?", a: "Ivan Pavlov." }
+            { subject: "TÂM LÝ HỌC", q: "Thuyết Điều kiện hóa cổ điển (Classical Conditioning) gắn liền với nhà tâm lý học nào?", a: "Ivan Pavlov (Thí nghiệm phản xạ tiết nước bọt ở chó)." },
+            { subject: "TÂM LÝ HỌC", q: "Hiện tượng quên do không sử dụng lại thông tin gọi là gì?", a: "Sự phai mờ vết nhớ (Decay Theory)." },
+            { subject: "TÂM LÝ HỌC", q: "Thời gian tập trung chuẩn của phương pháp Pomodoro là bao nhiêu phút?", a: "25 phút tập trung cao độ và 5 phút nghỉ ngơi." }
         ];
         let currentQuizIndex = 0;
 
@@ -364,7 +382,10 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             updateApiStatusUI();
             renderTasks();
             loadQuiz(0);
-            if (window.marked) marked.setOptions({ breaks: true, gfm: true });
+
+            if (window.marked) {
+                marked.setOptions({ breaks: true, gfm: true });
+            }
         });
 
         function updateApiStatusUI() {
@@ -372,7 +393,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                 apiStatusTag.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Chế độ: <b>Gemini Live AI (${selectedModel})</b>`;
                 apiStatusTag.className = "text-[11px] text-teal-600 font-medium flex items-center gap-1";
             } else {
-                apiStatusTag.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Chế độ: <b>Giả lập thông minh</b> (Bấm 'API Key' để nối AI)`;
+                apiStatusTag.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Chế độ: <b>Giả lập phản hồi</b> (Bấm 'API Key' để nối AI)`;
                 apiStatusTag.className = "text-[11px] text-slate-500 flex items-center gap-1";
             }
         }
@@ -398,6 +419,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                 } else {
                     parsedContent = escapeHtml(text).replace(/\n/g, '<br>');
                 }
+
                 messageDiv.innerHTML = `
                     <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
                         <i class="fa-solid fa-robot text-sm"></i>
@@ -407,6 +429,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                     </div>
                 `;
             }
+
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -441,6 +464,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (isSending) return;
+
             const message = userInput.value.trim();
             if (!message) return;
 
@@ -450,6 +474,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
 
             appendMessage('user', message);
             chatHistory.push({ role: 'user', content: message });
+
             showTypingIndicator();
 
             if (apiKey && apiKey.trim() !== '') {
@@ -461,7 +486,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                     appendMessage('bot', mockReply);
                     chatHistory.push({ role: 'assistant', content: mockReply });
                     isSending = false;
-                }, 400);
+                }, 600);
             }
         });
 
@@ -483,9 +508,13 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
         });
 
         async function fetchGeminiResponse(userPrompt) {
-            const endpoint = `https://generativelanguage.googleapis.com/v1/models/${selectedModel}:generateContent?key=${apiKey}`;
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+
             const contents = [
-                { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }] },
+                {
+                    role: "user",
+                    parts: [{ text: `${SYSTEM_PROMPT}\n\nLưu ý: Bạn đang trò chuyện cùng sinh viên.` }]
+                },
                 ...chatHistory.map(item => ({
                     role: item.role === 'user' ? 'user' : 'model',
                     parts: [{ text: item.content }]
@@ -495,7 +524,10 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             try {
                 const response = await fetch(endpoint, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
                     body: JSON.stringify({ contents: contents })
                 });
 
@@ -511,7 +543,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                     }
                 }
                 
-                // Fallback thông minh khi API bị giới hạn (429) hoặc lỗi mạng
+                // Fallback thông minh nếu gọi model chính lỗi
                 const fallbackReply = generateMockResponse(userPrompt);
                 appendMessage('bot', fallbackReply);
                 chatHistory.push({ role: 'assistant', content: fallbackReply });
@@ -526,43 +558,26 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
             }
         }
 
-        // --- HÀM GIẢ LẬP THÔNG MINH ĐÃ ĐƯỢC MỞ RỘNG VÀ XOAY VÒNG ĐA DẠNG ---
-        let quizMockIndex = 0;
-        const mockPsychologyQuestions = [
-            "🧠 **Bài tập Tâm lý học (Câu 1):** Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở vị trí đáy (cơ bản nhất)?\n👉 *Đáp án:* **Nhu cầu sinh lý** (ăn, uống, ngủ, nghỉ).",
-            "🧠 **Bài tập Tâm lý học (Câu 2):** Thuyết Điều kiện hóa cổ điển (Classical Conditioning) với thí nghiệm phản xạ tiết nước bọt ở chó gắn liền với tên tuổi ai?\n👉 *Đáp án:* **Ivan Pavlov**.",
-            "🧠 **Bài tập Tâm lý học (Câu 3):** Hiện tượng quên thông tin do dấu vết thần kinh phai mờ dần theo thời gian gọi là gì?\n👉 *Đáp án:* **Thuyết phai mờ vết nhớ (Decay Theory)**.",
-            "🧠 **Bài tập Tâm lý học (Câu 4):** Trí nhớ ngắn hạn của con người thường lưu trữ được khoảng bao nhiêu thông tin đơn lẻ cùng lúc?\n👉 *Đáp án:* Khoảng **7 ± 2** thông tin."
-        ];
-
         function generateMockResponse(prompt) {
             const p = prompt.toLowerCase();
 
-            if (p.includes('thư giãn') || p.includes('hít thở') || p.includes('mệt') || p.includes('stress')) {
-                return `🌿 **Monk hiểu cảm giác căng thẳng của bạn!** Hãy tạm gác lại việc học và thử ngay kỹ thuật **Hít thở 4-7-8**:\n` +
+            if (p.includes('thư giãn') || p.includes('hít thở') || p.includes('mệt') || p.includes('stress') || p.includes('căng thẳng') || p.includes('áp lực')) {
+                return `🌿 **Monk hiểu cảm giác này lắm!** Áp lực học tập và thi cử đôi khi làm chúng ta kiệt sức.\n\n` +
+                       `Bạn hãy thử bài tập **Hít thở 4-7-8** ngay ở góc phải màn hình nhé:\n` +
                        `1. **Hít vào** nhẹ nhàng qua mũi trong **4 giây**.\n` +
-                       `2. **Giữ hơi** trong phổi **7 giây**.\n` +
+                       `2. **Giữ khí** trong phổi **7 giây**.\n` +
                        `3. **Thở ra** từ từ bằng miệng trong **8 giây**.\n\n` +
-                       `Lặp lại 3 lần sẽ giúp cơ thể bạn thư thái ngay lập tức đấy! ❤️`;
+                       `Lặp lại vài lần sẽ giúp hệ thần kinh dịu lại ngay lập tức! Monk luôn ở đây đồng hành cùng bạn ❤️`;
             } else if (p.includes('tâm lý') || p.includes('ôn tập') || p.includes('bài tập') || p.includes('đố')) {
-                // Lấy câu hỏi luân phiên liên tục không bị lặp lại nhàm chán
-                const questionText = mockPsychologyQuestions[quizMockIndex];
-                quizMockIndex = (quizMockIndex + 1) % mockPsychologyQuestions.length;
-                return `${questionText}\n\n*(Mẹo: Bạn có thể bấm nút "Tạo bài tập Tâm lý học" lần nữa để Monk ra câu hỏi tiếp theo nhé!)*`;
-            } else if (p.includes('pomodoro') || p.includes('kế hoạch') || p.includes('lịch')) {
-                return `🍅 **Lên kế hoạch Pomodoro hiệu quả cùng Monk:**\n` +
-                       `- **Phiên học tập (25 phút):** Tập trung hoàn toàn vào một mục tiêu duy nhất.\n` +
-                       `- **Nghỉ ngắn (5 phút):** Đứng dậy uống nước, vươn vai thư giãn.\n` +
-                       `- **Nghỉ dài (15-20 phút):** Sau 4 chu kỳ liên tục để não bộ phục hồi.\n\n` +
-                       `Hãy thử áp dụng ngay với danh mục việc cần làm ở góc phải màn hình nhé!`;
-            } else if (p.includes('áp lực') || p.includes('thi cử')) {
-                return `💬 **Gỡ rối áp lực thi cử:**\n` +
-                       `1. Đừng cố gắng nhồi nhét toàn bộ kiến thức vào phút chót.\n` +
-                       `2. Chia nhỏ tài liệu thành từng phần ngắn và tự thưởng cho bản thân sau khi hoàn thành.\n` +
-                       `3. Đảm bảo ngủ đủ 7-8 tiếng trước ngày thi. Monk luôn tin tưởng bạn sẽ làm rất tốt! ✨`;
+                return `🧠 **Bài tập ôn tập môn Tâm lý học Đại cương:**\n\n` +
+                       `**Câu 1:** Theo Tháp nhu cầu của Abraham Maslow, nhu cầu nào nằm ở vị trí đáy (cơ bản nhất)?\n` +
+                       `- A. Nhu cầu an toàn\n` +
+                       `- B. Nhu cầu sinh lý (Ăn, uống, ngủ)\n` +
+                       `- C. Nhu cầu tôn trọng\n\n` +
+                       `💡 *Đáp án:* **B. Nhu cầu sinh lý** là nền tảng cơ bản nhất duy trì sự sống con người.`;
             } else {
-                return `Monk đã ghi nhận chia sẻ của bạn: *" ${prompt} "* 😊\n` +
-                       `Ở chế độ giả lập thông minh này, Monk sẵn sàng đồng hành cùng bạn qua các gợi ý bên dưới như **tạo câu hỏi ôn tập xoay vòng**, **hướng dẫn hít thở** hoặc **lên lịch Pomodoro**. Bạn muốn thử tính năng nào trước nào?`;
+                return `Monk đã nhận được tin nhắn của bạn rồi nè! 😊\n\n` +
+                       `Monk luôn ở đây để giúp bạn **ôn tập Tâm lý học**, **giải tỏa stress** hay **lên lịch học Pomodoro**. Bạn muốn Monk hỗ trợ gì tiếp theo?`;
             }
         }
 
@@ -612,6 +627,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
         function renderTasks() {
             taskList.innerHTML = '';
             let completedCount = 0;
+
             tasks.forEach((task, index) => {
                 if (task.done) completedCount++;
                 const item = document.createElement('div');
@@ -629,6 +645,7 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
                 `;
                 taskList.appendChild(item);
             });
+
             taskCount.textContent = `${completedCount}/${tasks.length}`;
             localStorage.setItem('miu_tasks', JSON.stringify(tasks));
         }
@@ -703,7 +720,9 @@ Bạn là Bot Monk - Trợ lý AI Chuyên gia Tư vấn Tâm lý Học đường
 
         btnCopyPrompt.addEventListener('click', () => {
             const text = document.getElementById('system-prompt-text').value;
-            navigator.clipboard.writeText(text).then(() => alert('Đã sao chép System Prompt!'));
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Đã sao chép System Prompt!');
+            });
         });
 
         btnClearChat.addEventListener('click', () => {
